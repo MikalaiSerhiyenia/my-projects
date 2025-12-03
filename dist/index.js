@@ -1,36 +1,38 @@
-// Получаем body
+// ======================================================
+// 1. ИНИЦИАЛИЗАЦИЯ
+// ======================================================
 const body = document.body;
 body.classList.add("page");
-// Создаем wrapper
 const wrapper = document.createElement("div");
 wrapper.classList.add("wrapper");
-// --- Header ---
+// ======================================================
+// 2. HEADER (логотип + меню + тема)
+// ======================================================
 const header = document.createElement("header");
 header.classList.add("header");
-// --- Логотип ---
+// --- 2.1. Логотип ---
 const logoDiv = document.createElement("div");
 logoDiv.classList.add("logo");
-// Создаем изображение для логотипа
 const logoImg = document.createElement("img");
-logoImg.src = "https://storage.googleapis.com/plfpl-production-adobe-approved/plfpl-production/6663509/56a101a0-2b8e-4d7c-aafa-1d5ec95e93e2.png"; // путь к картинке
-logoImg.alt = "My Projects Logo"; // альтернативный текст
-logoImg.style.height = "40px"; // высота логотипа, можно изменить
-logoImg.style.objectFit = "contain"; // чтобы картинка не искажалась
+logoImg.src = "https://storage.googleapis.com/plfpl-production-adobe-approved/plfpl-production/6663509/56a101a0-2b8e-4d7c-aafa-1d5ec95e93e2.png";
+logoImg.alt = "My Projects Logo";
+logoImg.style.height = "40px";
+logoImg.style.objectFit = "contain";
 logoDiv.appendChild(logoImg);
 header.appendChild(logoDiv);
-// --- Меню ---
+// --- 2.2. Меню ---
 const nav = document.createElement("nav");
 nav.classList.add("menu");
 const ul = document.createElement("ul");
 ul.classList.add("menu-list");
-const links = [
+const menuLinks = [
     { text: "About", href: "#about" },
     { text: "Sites", href: "#sites" },
     { text: "Games", href: "#games" },
     { text: "Other", href: "#other" },
     { text: "Contacts", href: "#contacts" },
 ];
-links.forEach(link => {
+menuLinks.forEach(link => {
     const li = document.createElement("li");
     li.classList.add("menu-item");
     const a = document.createElement("a");
@@ -42,12 +44,13 @@ links.forEach(link => {
 });
 nav.appendChild(ul);
 header.appendChild(nav);
-// --- Кнопка переключения темы с tooltip ---
+// --- 2.3. Кнопка переключения темы ---
 const themeToggleBtn = document.createElement("button");
 themeToggleBtn.textContent = "🌙";
 themeToggleBtn.classList.add("theme-toggle");
 themeToggleBtn.setAttribute("data-tooltip", "Switch to dark theme");
 header.appendChild(themeToggleBtn);
+// Логика переключения темы
 themeToggleBtn.addEventListener("click", () => {
     body.classList.toggle("dark-theme");
     if (body.classList.contains("dark-theme")) {
@@ -55,21 +58,50 @@ themeToggleBtn.addEventListener("click", () => {
         themeToggleBtn.setAttribute("data-tooltip", "Switch to light theme");
     }
     else {
-        themeToggleBtn.textContent = "🌙";
+        themeToggleBtn.textContent = "D";
         themeToggleBtn.setAttribute("data-tooltip", "Switch to dark theme");
     }
 });
-// --- Main ---
+// ======================================================
+// 3. MAIN (контент страницы)
+// ======================================================
 const main = document.createElement("main");
 main.classList.add("main");
-// --- Footer ---
+// ======================================================
+// 4. FOOTER (иконки + подсказки + авто-год)
+// ======================================================
 const footer = document.createElement("footer");
 footer.classList.add("footer");
-// --- Вкладываем все в wrapper ---
+// --- 4.1. Telegram icon + tooltip ---
+const tgWrapper = document.createElement("div");
+tgWrapper.classList.add("footer-icon");
+tgWrapper.dataset.tooltip = "@MklSrhn";
+const tgImg = document.createElement("img");
+tgImg.src = "./img/telegram-icon.png";
+tgImg.alt = "Telegram";
+tgWrapper.appendChild(tgImg);
+// --- 4.2. Автоматический год ---
+const yearDiv = document.createElement("div");
+yearDiv.classList.add("footer-year");
+yearDiv.textContent = `${new Date().getFullYear().toString()}`;
+// --- 4.3. Email icon + tooltip ---
+const mailWrapper = document.createElement("div");
+mailWrapper.classList.add("footer-icon");
+mailWrapper.dataset.tooltip = "mikalai.serhiyenia@gmail.com\nmikalai.serhiyenia@yahoo.com\nmikalai.serhiyenia@yandex.com";
+const mailImg = document.createElement("img");
+mailImg.src = "/Users/mikalai.serhiyenia/Desktop/my-projects/my-projects/img/telegram-icon.png";
+mailImg.alt = "Email";
+mailWrapper.appendChild(mailImg);
+// Собираем footer
+footer.appendChild(tgWrapper);
+footer.appendChild(yearDiv);
+footer.appendChild(mailWrapper);
+// ======================================================
+// 5. СБОРКА СТРАНИЦЫ
+// ======================================================
 wrapper.appendChild(header);
 wrapper.appendChild(main);
 wrapper.appendChild(footer);
-// --- Добавляем wrapper в body ---
 body.appendChild(wrapper);
 export {};
 //# sourceMappingURL=index.js.map

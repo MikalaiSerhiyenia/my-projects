@@ -188,3 +188,56 @@ body.dark-theme footer.footer {
   box-shadow: rgba(255, 255, 255, 0.05) 0px -10px 20px,
               rgba(255, 255, 255, 0.1) 0px -5px 10px;
 }
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 20px 0;
+  position: relative;
+}
+
+/* Иконки */
+.footer-icon img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.footer-icon img:hover {
+  transform: scale(1.15);
+}
+
+/* Tooltip */
+.footer-icon {
+  position: relative;
+}
+
+.footer-icon::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%; /* сверху от иконки */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  font-size: 14px;
+  z-index: 10;
+}
+
+.footer-icon:hover::after {
+  opacity: 1;
+}
+
+.footer-year {
+  font-size: 18px;
+  font-weight: bold;
+}
