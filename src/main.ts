@@ -1,57 +1,76 @@
 import "./style.css";
 
 // ======================================================
-// 1. ИНИЦИАЛИЗАЦИЯ
+// 1. БАЗОВЫЕ УТИЛИТЫ
+// ======================================================
+
+function el<K extends keyof HTMLElementTagNameMap>(
+  tag: K,
+  className?: string,
+  attrs?: Partial<HTMLElementTagNameMap[K]> | Record<string, string>
+) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+
+  if (attrs) {
+    for (const key in attrs) {
+      // @ts-ignore
+      element[key] = attrs[key];
+    }
+  }
+  return element;
+}
+
+// Создание простой секции без уникального контента
+function createSimpleSection(id: string, title: string): HTMLElement {
+  const section = el("section", id);
+  section.id = id;
+
+  const header = el("h2", "section-header", { textContent: title });
+  const container = el("div", `${id}-container`);
+
+  section.append(header, container);
+  return section;
+}
+
+// ======================================================
+// 2. ИНИЦИАЛИЗАЦИЯ
 // ======================================================
 
 const body = document.body;
 body.classList.add("page");
 
-const wrapper = document.createElement("div");
-wrapper.classList.add("wrapper");
+const wrapper = el("div", "wrapper");
 
 // ======================================================
-// 2. HEADER (логотип + меню + тема)
+// 3. HEADER
 // ======================================================
 
-// --- код header без изменений ---
-const header = document.createElement("header");
-header.classList.add("header");
+const header = el("header", "header");
 
-const logoDiv = document.createElement("div");
-logoDiv.classList.add("logo");
-
-const logoImg = document.createElement("img");
+// Logo
+const logoDiv = el("div", "logo");
+const logoImg = el("img") as HTMLImageElement;
 logoImg.src = "./img/my-projects-logo.png";
 logoImg.alt = "My Projects Logo";
 logoImg.style.objectFit = "contain";
-
 logoDiv.appendChild(logoImg);
+
 header.appendChild(logoDiv);
 
-const nav = document.createElement("nav");
-nav.classList.add("menu");
+// Menu
+const nav = el("nav", "menu");
+const ul = el("ul", "menu-list");
 
-const ul = document.createElement("ul");
-ul.classList.add("menu-list");
-
-const menuLinks = [
+[
   { text: "About", href: "#about" },
   { text: "Sites", href: "#sites" },
   { text: "Games", href: "#games" },
   { text: "Other", href: "#other" },
   { text: "Contacts", href: "#contacts" },
-];
-
-menuLinks.forEach(link => {
-  const li = document.createElement("li");
-  li.classList.add("menu-item");
-
-  const a = document.createElement("a");
-  a.textContent = link.text;
-  a.href = link.href;
-  a.classList.add("menu-link");
-
+].forEach(({ text, href }) => {
+  const li = el("li", "menu-item");
+  const a = el("a", "menu-link", { href, textContent: text });
   li.appendChild(a);
   ul.appendChild(li);
 });
@@ -59,136 +78,123 @@ menuLinks.forEach(link => {
 nav.appendChild(ul);
 header.appendChild(nav);
 
-const themeToggleBtn = document.createElement("button");
-themeToggleBtn.textContent = "🌙";
-themeToggleBtn.classList.add("theme-toggle");
+// Theme toggle
+const themeToggleBtn = el("button", "theme-toggle", {
+  textContent: "🌙",
+});
 themeToggleBtn.setAttribute("data-tooltip", "Switch to dark theme");
+
+themeToggleBtn.addEventListener("click", () => {
+  const dark = body.classList.toggle("dark-theme");
+  themeToggleBtn.textContent = dark ? "☀️" : "🌙";
+  themeToggleBtn.setAttribute(
+    "data-tooltip",
+    dark ? "Switch to light theme" : "Switch to dark theme"
+  );
+});
 
 header.appendChild(themeToggleBtn);
 
-themeToggleBtn.addEventListener("click", () => {
-  body.classList.toggle("dark-theme");
+// ======================================================
+// 4. MAIN
+// ======================================================
 
-  if (body.classList.contains("dark-theme")) {
-    themeToggleBtn.textContent = "☀️";
-    themeToggleBtn.setAttribute("data-tooltip", "Switch to light theme");
-  } else {
-    themeToggleBtn.textContent = "🌙";
-    themeToggleBtn.setAttribute("data-tooltip", "Switch to dark theme");
-  }
+const main = el("main", "main");
+
+// =============== ABOUT SECTION =========================
+const aboutSection = createSimpleSection("about", "About");
+main.appendChild(aboutSection);
+
+// =============== SITES SECTION =========================
+const sitesSection = el("section", "sites");
+sitesSection.id = "sites";
+
+const sitesHeader = el("h2", "section-header", {
+  textContent: "Sites",
 });
+const sitesContainer = el("div", "sites-container");
 
-// ======================================================
-// 3. MAIN (контент страницы)
-// ======================================================
-
-const main = document.createElement("main");
-main.classList.add("main");
-
-// --- 3.1. Секция с сайтами ---
-const sitesSection = document.createElement("section");
-sitesSection.classList.add("sites");
-
-const sitesSectionHeader = document.createElement("h2");
-sitesSectionHeader.classList.add("section-header");
-sitesSectionHeader.textContent = 'Sites';
-
-const sitesSectionContainer = document.createElement("div");
-sitesSectionContainer.classList.add("sites-container");
-
-// Данные сайтов
-const siteCards = [
+[
   {
-    header: 'Portfolio',
+    header: "Portfolio",
     name: "portfolio",
     imgSrc: "./img/portfolio.png",
-    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2025Q3/portfolio/"
+    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2025Q3/portfolio/",
   },
   {
-    header: 'Coffee House',
+    header: "Coffee House",
     name: "coffee-shop",
     imgSrc: "./img/coffee-house.png",
-    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2023Q4/coffee-house/"
+    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2023Q4/coffee-house/",
   },
   {
-    header: 'Christmas Shop',
+    header: "Christmas Shop",
     name: "christmas-shop",
     imgSrc: "./img/christmas-shop.png",
-    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2024Q4/christmas-shop/home.html"
-  }
-];
+    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2024Q4/christmas-shop/home.html",
+  },
+].forEach((card) => {
+  const link = el("a", "card-container", { href: card.url, target: "_blank" });
 
-// Создание карточек
-siteCards.forEach(card => {
-  const link = document.createElement("a");
-  link.href = card.url;
-  link.target = "_blank";
-  link.classList.add("card-container");
+  const cardWrapper = el("div", "site-card");
+  const img = el("img", "site-screenshot", {
+    src: card.imgSrc,
+    alt: card.name,
+  }) as HTMLImageElement;
 
-  const cardWrapper = document.createElement("div");
-  cardWrapper.classList.add("site-card");
-
-  const img = document.createElement("img");
-  img.src = card.imgSrc;
-  img.alt = card.name;
-  img.classList.add("site-screenshot");
-
-  const cardHeader = document.createElement("h3");
-  cardHeader.classList.add("card-header");
-  cardHeader.textContent = card.header;
+  const cardHeader = el("h3", "card-header", { textContent: card.header });
 
   cardWrapper.appendChild(img);
   link.append(cardWrapper, cardHeader);
-
-  sitesSectionContainer.appendChild(link);
+  sitesContainer.appendChild(link);
 });
 
-sitesSection.append(sitesSectionHeader, sitesSectionContainer);
+sitesSection.append(sitesHeader, sitesContainer);
 main.appendChild(sitesSection);
 
-// ======================================================
-// 4. FOOTER (иконки + подсказки + авто-год)
-// ======================================================
+// =============== GAMES SECTION =========================
+const gamesSection = createSimpleSection("games", "Games");
+main.appendChild(gamesSection);
 
-const footer = document.createElement("footer");
-footer.classList.add("footer");
-
-// Telegram
-const tgWrapper = document.createElement("div");
-tgWrapper.classList.add("footer-icon");
-tgWrapper.dataset.tooltip = "@MklSrhn";
-
-const tgImg = document.createElement("img");
-tgImg.src = "./img/telegram-icon.png";
-tgImg.alt = "Telegram";
-tgWrapper.appendChild(tgImg);
-
-// Авто-год
-const yearDiv = document.createElement("div");
-yearDiv.classList.add("footer-year");
-yearDiv.textContent = `${new Date().getFullYear()}`;
-
-// Email
-const mailWrapper = document.createElement("div");
-mailWrapper.classList.add("footer-icon");
-mailWrapper.dataset.tooltip = "mikalai.serhiyenia@gmail.com\nmikalai.serhiyenia@yahoo.com\nmikalai.serhiyenia@yandex.com";
-
-const mailImg = document.createElement("img");
-mailImg.src = "./img/email-icon.png";
-mailImg.alt = "Email";
-mailWrapper.appendChild(mailImg);
-
-// Сборка footer
-footer.appendChild(tgWrapper);
-footer.appendChild(yearDiv);
-footer.appendChild(mailWrapper);
+// =============== OTHER SECTION =========================
+const otherSection = createSimpleSection("other", "Other");
+main.appendChild(otherSection);
 
 // ======================================================
-// 5. СБОРКА СТРАНИЦЫ
+// 5. FOOTER
 // ======================================================
 
-wrapper.appendChild(header);
-wrapper.appendChild(main);
-wrapper.appendChild(footer);
+const footer = el("footer", "footer");
 
+function createFooterIcon(imgSrc: string, alt: string, tooltip: string) {
+  const wrap = el("div", "footer-icon");
+  wrap.dataset.tooltip = tooltip;
+
+  const img = el("img") as HTMLImageElement;
+  img.src = imgSrc;
+  img.alt = alt;
+
+  wrap.appendChild(img);
+  return wrap;
+}
+
+footer.appendChild(
+  createFooterIcon("./img/telegram-icon.png", "Telegram", "@MklSrhn")
+);
+footer.appendChild(
+  el("div", "footer-year", { textContent: `${new Date().getFullYear()}` })
+);
+footer.appendChild(
+  createFooterIcon(
+    "./img/email-icon.png",
+    "Email",
+    "mikalai.serhiyenia@gmail.com\nmikalai.serhiyenia@yahoo.com\nmikalai.serhiyenia@yandex.com"
+  )
+);
+
+// ======================================================
+// 6. СБОРКА
+// ======================================================
+
+wrapper.append(header, main, footer);
 body.appendChild(wrapper);
