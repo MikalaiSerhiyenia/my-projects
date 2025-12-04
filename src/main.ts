@@ -10,17 +10,14 @@ body.classList.add("page");
 const wrapper = document.createElement("div");
 wrapper.classList.add("wrapper");
 
-
-
 // ======================================================
 // 2. HEADER (логотип + меню + тема)
 // ======================================================
 
+// --- код header без изменений ---
 const header = document.createElement("header");
 header.classList.add("header");
 
-
-// --- 2.1. Логотип ---
 const logoDiv = document.createElement("div");
 logoDiv.classList.add("logo");
 
@@ -32,8 +29,6 @@ logoImg.style.objectFit = "contain";
 logoDiv.appendChild(logoImg);
 header.appendChild(logoDiv);
 
-
-// --- 2.2. Меню ---
 const nav = document.createElement("nav");
 nav.classList.add("menu");
 
@@ -64,8 +59,6 @@ menuLinks.forEach(link => {
 nav.appendChild(ul);
 header.appendChild(nav);
 
-
-// --- 2.3. Кнопка переключения темы ---
 const themeToggleBtn = document.createElement("button");
 themeToggleBtn.textContent = "🌙";
 themeToggleBtn.classList.add("theme-toggle");
@@ -73,7 +66,6 @@ themeToggleBtn.setAttribute("data-tooltip", "Switch to dark theme");
 
 header.appendChild(themeToggleBtn);
 
-// Логика переключения темы
 themeToggleBtn.addEventListener("click", () => {
   body.classList.toggle("dark-theme");
 
@@ -86,8 +78,6 @@ themeToggleBtn.addEventListener("click", () => {
   }
 });
 
-
-
 // ======================================================
 // 3. MAIN (контент страницы)
 // ======================================================
@@ -95,7 +85,66 @@ themeToggleBtn.addEventListener("click", () => {
 const main = document.createElement("main");
 main.classList.add("main");
 
+// --- 3.1. Секция с сайтами ---
+const sitesSection = document.createElement("section");
+sitesSection.classList.add("sites");
 
+const sitesSectionHeader = document.createElement("h2");
+sitesSectionHeader.classList.add("section-header");
+sitesSectionHeader.textContent = 'Sites';
+
+const sitesSectionContainer = document.createElement("div");
+sitesSectionContainer.classList.add("sites-container");
+
+// Данные сайтов
+const siteCards = [
+  {
+    header: 'Portfolio',
+    name: "portfolio",
+    imgSrc: "./img/portfolio.png",
+    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2025Q3/portfolio/"
+  },
+  {
+    header: 'Coffee House',
+    name: "coffee-shop",
+    imgSrc: "./img/coffee-house.png",
+    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2023Q4/coffee-house/"
+  },
+  {
+    header: 'Christmas Shop',
+    name: "christmas-shop",
+    imgSrc: "./img/christmas-shop.png",
+    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2024Q4/christmas-shop/home.html"
+  }
+];
+
+// Создание карточек
+siteCards.forEach(card => {
+  const link = document.createElement("a");
+  link.href = card.url;
+  link.target = "_blank";
+  link.classList.add("card-container");
+
+  const cardWrapper = document.createElement("div");
+  cardWrapper.classList.add("site-card");
+
+  const img = document.createElement("img");
+  img.src = card.imgSrc;
+  img.alt = card.name;
+  img.classList.add("site-screenshot");
+
+  const cardHeader = document.createElement("h3");
+  cardHeader.classList.add("card-header");
+  cardHeader.textContent = card.header;
+
+  cardWrapper.appendChild(img);
+  link.append(cardWrapper, cardHeader);
+
+  sitesSectionContainer.appendChild(link);
+});
+
+sitesSection.append(sitesSectionHeader, sitesSectionContainer);
+main.appendChild(sitesSection);
 
 // ======================================================
 // 4. FOOTER (иконки + подсказки + авто-год)
@@ -104,8 +153,7 @@ main.classList.add("main");
 const footer = document.createElement("footer");
 footer.classList.add("footer");
 
-
-// --- 4.1. Telegram icon + tooltip ---
+// Telegram
 const tgWrapper = document.createElement("div");
 tgWrapper.classList.add("footer-icon");
 tgWrapper.dataset.tooltip = "@MklSrhn";
@@ -115,14 +163,12 @@ tgImg.src = "./img/telegram-icon.png";
 tgImg.alt = "Telegram";
 tgWrapper.appendChild(tgImg);
 
-
-// --- 4.2. Автоматический год ---
+// Авто-год
 const yearDiv = document.createElement("div");
 yearDiv.classList.add("footer-year");
-yearDiv.textContent = `${new Date().getFullYear().toString()}`;
+yearDiv.textContent = `${new Date().getFullYear()}`;
 
-
-// --- 4.3. Email icon + tooltip ---
+// Email
 const mailWrapper = document.createElement("div");
 mailWrapper.classList.add("footer-icon");
 mailWrapper.dataset.tooltip = "mikalai.serhiyenia@gmail.com\nmikalai.serhiyenia@yahoo.com\nmikalai.serhiyenia@yandex.com";
@@ -132,13 +178,10 @@ mailImg.src = "./img/email-icon.png";
 mailImg.alt = "Email";
 mailWrapper.appendChild(mailImg);
 
-
-// Собираем footer
+// Сборка footer
 footer.appendChild(tgWrapper);
 footer.appendChild(yearDiv);
 footer.appendChild(mailWrapper);
-
-
 
 // ======================================================
 // 5. СБОРКА СТРАНИЦЫ

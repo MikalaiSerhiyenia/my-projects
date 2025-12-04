@@ -1,57 +1,86 @@
-/* Сброс и базовые настройки */
+/* =========================================================
+   0. RESET & GLOBAL SETTINGS
+   ========================================================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Базовый размер шрифта для всей страницы */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 html {
   font-size: 1.5rem;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 body {
-  font-size: inherit; /* наследуем 1.5rem */
+  font-size: inherit;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Светлая тема */
+
+/* =========================================================
+   1. THEMES
+   ========================================================= */
+
+/* Light */
 body {
   background-color: #ffffff;
   color: #000000;
 }
 
-/* Тёмная тема */
+/* Dark */
 body.dark-theme {
   background-color: #121212;
   color: #ffffff;
 }
 
-/* Wrapper */
+
+/* =========================================================
+   2. PAGE LAYOUT
+   ========================================================= */
+
 .wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Header */
+.main {
+  flex: 1;
+  padding: 1rem;
+}
+
+
+/* =========================================================
+   3. HEADER
+   ========================================================= */
+
 .header {
   display: flex;
   justify-content: space-around;
   padding: 1rem 0;
   gap: 20px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-              rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
-              rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+
+  box-shadow: 
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+
   transition: box-shadow 0.3s ease;
 }
 
 body.dark-theme .header {
-  box-shadow: rgba(255, 255, 255, 0.05) 0px 10px 20px,
-              rgba(255, 255, 255, 0.1) 0px 5px 10px;
+  box-shadow:
+    rgba(255, 255, 255, 0.05) 0px 10px 20px,
+    rgba(255, 255, 255, 0.1) 0px 5px 10px;
 }
 
+/* Logo */
 .logo {
   display: flex;
   justify-content: center;
@@ -59,19 +88,16 @@ body.dark-theme .header {
 }
 
 .logo img {
-  display: block;
   width: 2rem;
   height: 2rem;
-  width: auto;
   border-radius: 5px;
 }
 
-/* Main */
-.main {
-  flex: 1;
-}
 
-/* Меню */
+/* =========================================================
+   4. NAVIGATION MENU
+   ========================================================= */
+
 .menu {
   display: flex;
   justify-content: center;
@@ -113,6 +139,7 @@ body.dark-theme .header {
   width: 100%;
 }
 
+/* Dark theme menu */
 body.dark-theme .menu-link {
   color: #ffffff;
 }
@@ -125,7 +152,11 @@ body.dark-theme .menu-link::after {
   background-color: #00BFFF;
 }
 
-/* Кнопка переключения темы с tooltip */
+
+/* =========================================================
+   5. THEME TOGGLE BUTTON
+   ========================================================= */
+
 .theme-toggle {
   width: 2rem;
   height: 2rem;
@@ -138,11 +169,26 @@ body.dark-theme .menu-link::after {
   font-size: inherit;
 }
 
-/* Tooltip кнопки */
+.theme-toggle:hover {
+  background-color: #007BFF;
+  color: white;
+}
+
+/* Dark theme button */
+body.dark-theme .theme-toggle {
+  border-color: #00BFFF;
+}
+
+body.dark-theme .theme-toggle:hover {
+  background-color: #00BFFF;
+  color: black;
+}
+
+/* Tooltip */
 .theme-toggle::after {
   content: attr(data-tooltip);
   position: absolute;
-  top: 125%; 
+  top: 125%;
   left: 50%;
   transform: translateX(-50%);
   background: #333;
@@ -161,44 +207,103 @@ body.dark-theme .menu-link::after {
   opacity: 1;
 }
 
-.theme-toggle:hover {
-  background-color: #007BFF;
-  color: white;
+
+/* =========================================================
+   6. SITES SECTION (portfolio, coffee-house etc.)
+   ========================================================= */
+
+.section-header {
+  align-self: flex-start;
 }
 
-body.dark-theme .theme-toggle {
-  border-color: #00BFFF;
+.sites {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
-body.dark-theme .theme-toggle:hover {
-  background-color: #00BFFF;
-  color: black;
+.sites-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
 }
 
-/* Footer */
+/* Entire clickable block */
+.card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  border: 1px solid #00BFFF;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.card-container:hover {
+  transform: scale(1.05);
+}
+
+.card-header {
+  padding: 1rem 0;
+}
+
+/* Square image container */
+.site-card {
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: 10px;
+  position: relative;
+}
+
+/* Screenshot */
+.site-screenshot {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  animation: scrollImage 20s ease-in-out infinite alternate;
+}
+
+
+/* =========================================================
+   7. FOOTER
+   ========================================================= */
+
 footer.footer {
   display: flex;
   justify-content: space-around;
   align-items: center;
   gap: 40px;
   padding: 20px 0;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px -50px 100px -20px,
-              rgba(0, 0, 0, 0.3) 0px -30px 60px -30px;
+
+  box-shadow:
+    rgba(50, 50, 93, 0.25) 0px -50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px -30px 60px -30px;
+
   font-size: inherit;
 }
 
 body.dark-theme footer.footer {
-  box-shadow: rgba(255, 255, 255, 0.05) 0px -10px 20px,
-              rgba(255, 255, 255, 0.1) 0px -5px 10px;
+  box-shadow:
+    rgba(255, 255, 255, 0.05) 0px -10px 20px,
+    rgba(255, 255, 255, 0.1) 0px -5px 10px;
 }
 
+/* Footer icons */
 .footer div {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Иконки футера */
 .footer-icon img {
   width: 2rem;
   height: 2rem;
@@ -232,15 +337,34 @@ body.dark-theme footer.footer {
   z-index: 10;
 }
 
-.footer-icon::after, .theme-toggle::after {
-  white-space: pre-wrap;
-}
-
 .footer-icon:hover::after {
   opacity: 1;
 }
 
 .footer-year {
   font-weight: bold;
-  font-size: inherit;
+}
+
+
+/* =========================================================
+   8. ANIMATIONS
+   ========================================================= */
+
+@keyframes scrollImage {
+  0% { transform: translateY(0%); }
+  100% { transform: translateY(-81%); }
+}
+
+
+/* =========================================================
+   9. RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1023px) {
+  .sites-container {
+    flex-direction: column;
+  }
+  .card-container {
+    width: 90%;
+  }
 }
