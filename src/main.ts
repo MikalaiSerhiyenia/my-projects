@@ -153,7 +153,51 @@ sitesSection.append(sitesHeader, sitesContainer);
 main.appendChild(sitesSection);
 
 // =============== GAMES SECTION =========================
-const gamesSection = createSimpleSection("games", "Games");
+
+const gamesSection = el("section", "games");
+gamesSection.id = "games";
+
+const gamesHeader = el("h2", "section-header", {
+  textContent: "Games",
+});
+const gamesContainer = el("div", "games-container");
+
+[
+  {
+    header: "Hangman",
+    name: "hangman",
+    imgSrc: "./img/hangman.png",
+    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2023Q4/hangman/",
+  },
+  {
+    header: "Nonograms",
+    name: "nonograms",
+    imgSrc: "./img/nonograms.png",
+    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2023Q4/nonograms/",
+  },
+  {
+    header: "Pair 'em up",
+    name: "pair-em-up",
+    imgSrc: "./img/pair-em-up.png",
+    url: "https://rolling-scopes-school.github.io/mikalaiserhiyenia-JSFE2025Q3/pair-em-up/",
+  },
+].forEach((card) => {
+  const link = el("a", "card-container", { href: card.url, target: "_blank" });
+
+  const cardWrapper = el("div", "game-card");
+  const img = el("img", "game-screenshot", {
+    src: card.imgSrc,
+    alt: card.name,
+  }) as HTMLImageElement;
+
+  const cardHeader = el("h3", "card-header", { textContent: card.header });
+
+  cardWrapper.appendChild(img);
+  link.append(cardWrapper, cardHeader);
+  gamesContainer.appendChild(link);
+});
+
+gamesSection.append(gamesHeader, gamesContainer);
 main.appendChild(gamesSection);
 
 // =============== OTHER SECTION =========================
@@ -165,6 +209,7 @@ main.appendChild(otherSection);
 // ======================================================
 
 const footer = el("footer", "footer");
+footer.id = 'contacts';
 
 function createFooterIcon(imgSrc: string, alt: string, tooltip: string) {
   const wrap = el("div", "footer-icon");
@@ -182,7 +227,7 @@ footer.appendChild(
   createFooterIcon("./img/telegram-icon.png", "Telegram", "@MklSrhn")
 );
 footer.appendChild(
-  el("div", "footer-year", { textContent: `${new Date().getFullYear()}` })
+  createFooterIcon("./img/phone-icon.png", "Phone", "+375(29)566-22-68")
 );
 footer.appendChild(
   createFooterIcon(
@@ -190,6 +235,9 @@ footer.appendChild(
     "Email",
     "mikalai.serhiyenia@gmail.com\nmikalai.serhiyenia@yahoo.com\nmikalai.serhiyenia@yandex.com"
   )
+);
+footer.appendChild(
+  el("div", "footer-year", { textContent: `${new Date().getFullYear()}` })
 );
 
 // ======================================================
